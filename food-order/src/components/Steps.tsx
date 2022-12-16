@@ -41,20 +41,24 @@ function classNames(...classes:string[]) {
 let restaurants = new Map();
 
 const Step: React.FC<StepProps> = ({ step, setStep }) => {
-  const [selectedMeal, setSelectedMeal] = useState(meals[0]);
-  const [numberOfPeople, setNumberOfPeople] = useState(0);
+  const [selectedMeal, setSelectedMeal] = useState('');
+  const [numberOfPeople, setNumberOfPeople] = useState<number>(1);
   const [selectedRestaurant, setSelectedRestaurant] = useState('');
-  const [currentDish, setCurrentDish] = useState('---');
+  const [currentDish, setCurrentDish] = useState('');
   const [currentDishCount, setCurrentDishCount] = useState(0);
   const [selectedDishes, setSelectedDishes] = useState<selectedDish[]>([]);
   const [availableRestaurants, setAvailableRestaurants] = useState<string[]>([]);
   const [availableDishes, setAvailableDishes] = useState<string[]>([]);
+  const [errorMeal, setErrorMeal] = useState(false);
+  const [errorPeople, setErrorPeople] = useState(false);
+  const [errorRestaurant, setErrorRestaurant] = useState(false);
+  const [errorDishes, setErrorDishes] = useState(false);
   
   useMemo(
     () => {
+      // generate a restaurant map for querying
       let restaurantMap = new Map();
       data['dishes'].map((element:dishData) => {
-        console.log(element.name, element. restaurant)
         if (!restaurantMap.get(element.restaurant)) {
           restaurantMap.set(element.restaurant, {
             meals: element.availableMeals,
@@ -66,7 +70,8 @@ const Step: React.FC<StepProps> = ({ step, setStep }) => {
           value.dishes.push(element.name);
         }
         restaurants = new Map(restaurantMap);
-    })},[]
+    })
+  },[]
   );
 
   useEffect(() => {
@@ -102,6 +107,11 @@ const Step: React.FC<StepProps> = ({ step, setStep }) => {
     }
   };
 
+  const handlePeopleChange = (num: number) => {
+    setNumberOfPeople(num);
+    validation(step);
+  }
+
   const handleClick = () => {
     if (selectedDishes.filter((item)=>
     currentDish === item.name).length > 0) {
@@ -125,6 +135,53 @@ const Step: React.FC<StepProps> = ({ step, setStep }) => {
       ...newSelectedDishes,
     ]);
   }
+  const validation = (step: number) => {
+    let flag = true;
+    switch (step) {
+      case steps.MEAL_AND_PEOPLE:
+        if (!selectedMeal) {
+          setErrorMeal(true);
+          flag = false;
+        }
+        if (numberOfPeople <= 0 || numberOfPeople > 10) {
+          setErrorPeople(true);
+          flag = false;
+        }
+        break;
+      case steps.RESTAURANT:
+        if (!selectedRestaurant) {
+          setErrorRestaurant(true);
+          flag = false;
+        }
+        break;
+      case steps.DISHES:
+        let total:number = selectedDishes.reduce((accumulator, currentValue) => accumulator + currentValue.count, 0)
+        console.log('total', total);
+        if (selectedDishes.length > 10 || total <= numberOfPeople) {
+          setErrorDishes(true);
+          flag = false;
+        }
+        break;
+      default:
+    }
+    return flag;
+  }
+
+  const handlePrevious = () => {
+    
+    setStep(step - 1);
+    return;
+  }
+
+  const handleNext = () => {
+    console.log(step);
+    console.log(numberOfPeople)
+    if (!validation(step)) {
+      return;
+    };
+    setStep(step + 1);
+    return;
+  }
 
   const handleSubmit = () => {
     let finalResult:finalResult = {
@@ -133,6 +190,7 @@ const Step: React.FC<StepProps> = ({ step, setStep }) => {
       restaurant: selectedRestaurant,
       dishes: selectedDishes
     };
+    alert('Submitted!');
     console.log(finalResult);
   }
 
@@ -147,7 +205,7 @@ const Step: React.FC<StepProps> = ({ step, setStep }) => {
             <>
               <Listbox.Label className="block text-sm font-medium text-gray-700">Please Select a Meal</Listbox.Label>
               <div className="relative mt-1">
-                <Listbox.Button className="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm">
+                <Listbox.Button className="h-10 relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm">
                   <span className="flex items-center">
                     <span className="ml-3 block truncate">{selectedMeal}</span>
                   </span>
@@ -204,6 +262,9 @@ const Step: React.FC<StepProps> = ({ step, setStep }) => {
             </>
             )}
           </Listbox>
+          <div className={classNames(errorMeal ? "visible": "invisible", "text-red-700 block text-sm font-medium")}>
+              Please select a meal.
+          </div>
           </div>
           <div className="mb-3 xl:w-96">
             <label htmlFor="price" className="block text-sm font-medium text-gray-700">
@@ -213,9 +274,14 @@ const Step: React.FC<StepProps> = ({ step, setStep }) => {
               type="number"
               name="people"
               id="people"
-              className="form-control px-3 py-1.5 block w-full rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              value={numberOfPeople}
+              className="form-control pl-5 py-2 block w-full rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               placeholder="0"
+              onChange={(e)=>handlePeopleChange(Number(e.target.value))}
             />
+            <div className={classNames(errorPeople ? "visible": "invisible", "text-red-700 block text-sm font-medium")}>
+              Number should be 1 to 10. 
+            </div>
           </div>
         </div>
       }
@@ -227,7 +293,7 @@ const Step: React.FC<StepProps> = ({ step, setStep }) => {
             <>
               <Listbox.Label className="block text-sm font-medium text-gray-700">Please Select a Restaurant</Listbox.Label>
               <div className="relative mt-1">
-                <Listbox.Button className="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm">
+                <Listbox.Button className="h-10 relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm">
                   <span className="flex items-center">
                     <span className="ml-3 block truncate">{selectedRestaurant}</span>
                   </span>
@@ -284,6 +350,9 @@ const Step: React.FC<StepProps> = ({ step, setStep }) => {
             </>
             )}
           </Listbox>
+          <div className={classNames(errorRestaurant ? "visible": "invisible", "text-red-700 block text-sm font-medium")}>
+              Please select a restaurant.
+          </div>
         </div>
       }
       {
@@ -296,7 +365,7 @@ const Step: React.FC<StepProps> = ({ step, setStep }) => {
             <>
               <Listbox.Label className="block text-sm font-medium text-gray-700">Please Select a Dish</Listbox.Label>
               <div className="relative mt-1">
-                <Listbox.Button className="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm">
+                <Listbox.Button className="h-10 relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm">
                   <span className="flex items-center">
                     <span className="ml-3 block truncate">{currentDish}</span>
                   </span>
@@ -362,7 +431,7 @@ const Step: React.FC<StepProps> = ({ step, setStep }) => {
               type="number"
               name="people"
               id="people"
-              className="form-control px-3 py-1.5 block w-full rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              className="form-control pl-5 py-2 block w-full rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               placeholder="0"
               value={currentDishCount}
               onChange={(e)=>{setCurrentDishCount(Number(e.target.value))}}
@@ -394,6 +463,9 @@ const Step: React.FC<StepProps> = ({ step, setStep }) => {
                   )}
                 </ul>
           </div>
+        </div>
+        <div className={classNames(errorDishes ? "visible": "invisible", "text-red-700 mt-5 block text-sm font-medium")}>
+              The dishes' number should be greater or equal to the number of people selected in Step 1 and a maximum of 10 is allowed.
         </div>
         </div>
       }
@@ -444,7 +516,7 @@ const Step: React.FC<StepProps> = ({ step, setStep }) => {
       </button>
       {step < steps.REVIEW && <button 
         className="relative inline-flex items-center border px-4 py-2 text-sm font-medium focus:z-20 bg-indigo-200 text-indigo-700 rounded hover:bg-indigo-300"
-        onClick={()=>setStep(step + 1)}
+        onClick={handleNext}
       >
         Next
       </button>}
