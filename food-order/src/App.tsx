@@ -7,7 +7,7 @@ const App: React.FC = () =>  {
   return (
     <div className="App">
       <Navigation step={step}/>
-      <Steps step={step}/>
+      <Steps step={step} setStep={setStep}/>
     </div>
   );
 }

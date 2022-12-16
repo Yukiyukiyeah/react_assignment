@@ -6,15 +6,11 @@ interface NavigationProps {
 }
 
 const Navigation: React.FC<NavigationProps> = ({ step }) => {
-  console.log('step', step);
-  console.log(step === steps.MEAL_AND_PEOPLE);
-  console.log(step === steps.RESTAURANT);
-  step = 1;
   return <div className="m-10 p-10">
     <div className="flex items-center justify-between bg-white sm:px-6">
       <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-around">
         <div>
-          <nav className="isolate inline-flex item-center -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+          <nav className="isolate inline-flex item-center -space-x-px rounded-md shadow-sm">
             <a
               href="#"
               aria-current="step"
