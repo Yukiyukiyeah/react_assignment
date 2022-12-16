@@ -1,7 +1,7 @@
 {
   "name": "food-order",
   "version": "0.1.0",
-  "homepage": "https://yukiyukiyeah.github.io/",
+  "homepage": "https://yukiyukiyeah.github.io/react-assignment",
   "private": false,
   "dependencies": {
     "@headlessui/react": "^1.5.0",
