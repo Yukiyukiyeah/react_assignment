@@ -1,14 +1,19 @@
-import { useState } from 'react';
-import Navigation from './components/Navigation'
-import Steps from './components/Steps'
+
+import MainPage from './mainpage';
+import { 
+  HashRouter as Router, 
+  Route, 
+  Switch
+} from "react-router-dom";
 
 const App: React.FC = () =>  {
-  const [step, setStep] = useState(1)
   return (
-    <div className="App">
-      <Navigation step={step} setStep={setStep}/>
-      <Steps step={step} setStep={setStep}/>
-    </div>
+    <Router basename = "">
+      <Switch>
+        <Route exact path = "/" component = { MainPage }/>
+      </Switch>
+    </Router>
+    
   );
 }
 

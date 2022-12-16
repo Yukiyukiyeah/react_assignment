@@ -57,7 +57,7 @@ const Step: React.FC<StepProps> = ({ step, setStep }) => {
     () => {
       // generate a restaurant map for querying
       let restaurantMap = new Map();
-      data['dishes'].map((element:dishData) => {
+      for (let element of data['dishes']) {
         if (!restaurantMap.get(element.restaurant)) {
           restaurantMap.set(element.restaurant, {
             meals: element.availableMeals,
@@ -68,8 +68,8 @@ const Step: React.FC<StepProps> = ({ step, setStep }) => {
         if (value) {
           value.dishes.push(element.name);
         }
-        restaurants = new Map(restaurantMap);
-    })
+      }
+      restaurants = new Map(restaurantMap);
   },[]
   );
 
@@ -451,7 +451,7 @@ const Step: React.FC<StepProps> = ({ step, setStep }) => {
             />
           </div>
         </div>
-        <div className="flex justify-between mt-10">
+        <div className="flex justify-end mt-10">
           <div>
           <ul role="list" className="divide-y divide-gray-200 rounded-md">
                   {selectedDishes.map((dish) => (
@@ -471,7 +471,7 @@ const Step: React.FC<StepProps> = ({ step, setStep }) => {
                 </ul>
           </div>
           <button 
-          className="w-10 h-10 rounded-full bg-indigo-500 hover:bg-indigo-500 text-white"
+          className="ml-20 w-10 h-10 rounded-full bg-indigo-500 hover:bg-indigo-500 text-white"
           onClick={handleClick}
                       >
             +
