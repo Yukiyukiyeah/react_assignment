@@ -76,13 +76,16 @@ const Step: React.FC<StepProps> = ({ step, setStep }) => {
 
   useEffect(() => {
     generateAvailableRestaurant();
+    console.log('gggenn')
   }, [selectedMeal]);
 
   useEffect(() => {
+    console.log('avail', availableDishes);
     generateAvailableDishes();
-  }, [availableRestaurants]);
+  }, [selectedRestaurant]);
 
   useEffect(() => {
+    console.log('avail', availableDishes);
   }, [availableDishes])
 
   const generateAvailableRestaurant = () => {
@@ -156,7 +159,7 @@ const Step: React.FC<StepProps> = ({ step, setStep }) => {
       case steps.DISHES:
         let total:number = selectedDishes.reduce((accumulator, currentValue) => accumulator + currentValue.count, 0)
         console.log('total', total);
-        if (selectedDishes.length > 10 || total <= numberOfPeople) {
+        if (selectedDishes.length > 10 || total < numberOfPeople) {
           setErrorDishes(true);
           flag = false;
         }
@@ -358,7 +361,7 @@ const Step: React.FC<StepProps> = ({ step, setStep }) => {
         step === steps.DISHES && 
         <div>
         <div className="flex justify-between">
-          <div>
+          <div className="w-60 mr-10">
           <Listbox value={currentDish} onChange={setCurrentDish}>
           {({ open }) => (
             <>
@@ -422,7 +425,7 @@ const Step: React.FC<StepProps> = ({ step, setStep }) => {
             )}
           </Listbox>
           </div>
-          <div>
+          <div className="w-80">
             <label htmlFor="price" className="block text-sm font-medium text-gray-700">
               Please Enter No. of Serving
             </label>
@@ -464,7 +467,7 @@ const Step: React.FC<StepProps> = ({ step, setStep }) => {
           </div>
         </div>
         <div className={classNames(errorDishes ? "visible": "invisible", "text-red-700 mt-5 block text-sm font-medium")}>
-              The dishes' number should be greater or equal to the number of people selected in Step 1 and a maximum of 10 is allowed.
+              The dishes' number should be greater or equal to the number of people ({numberOfPeople}) and a maximum of 10 is allowed.
         </div>
         </div>
       }
