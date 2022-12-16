@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { steps } from '../utils/config';
 
 interface NavigationProps {

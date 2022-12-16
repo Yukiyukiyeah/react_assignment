@@ -1,6 +1,7 @@
 {
   "name": "food-order",
   "version": "0.1.0",
+  "homepage": "https://yukiyukiyeah.github.io/react-assignment",
   "private": true,
   "dependencies": {
     "@headlessui/react": "^1.5.0",
@@ -17,6 +18,8 @@
     "web-vitals": "^2.1.0"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -42,6 +45,7 @@
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.3",
-    "@types/react-dom": "^18.0.9"
+    "@types/react-dom": "^18.0.9",
+    "gh-pages": "^4.0.0"
   }
 }
