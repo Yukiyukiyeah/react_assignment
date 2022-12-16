@@ -74,10 +74,13 @@ const Step: React.FC<StepProps> = ({ step, setStep }) => {
   );
 
   useEffect(() => {
+    setSelectedRestaurant('');
     generateAvailableRestaurant();
   }, [selectedMeal]);
 
   useEffect(() => {
+    setCurrentDish('');
+    setSelectedDishes([]);
     generateAvailableDishes();
   }, [selectedRestaurant]);
 
