@@ -6,7 +6,7 @@ const App: React.FC = () =>  {
   const [step, setStep] = useState(1)
   return (
     <div className="App">
-      <Navigation step={step}/>
+      <Navigation step={step} setStep={setStep}/>
       <Steps step={step} setStep={setStep}/>
     </div>
   );

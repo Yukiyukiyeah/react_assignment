@@ -2,7 +2,6 @@ import { Fragment, useState, useEffect, useMemo } from 'react';
 import { steps, meals } from '../utils/config';
 import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
-import { PaperClipIcon } from '@heroicons/react/20/solid';
 const data = require('../data/dishes.json');
 
 interface StepProps {
