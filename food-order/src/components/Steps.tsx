@@ -45,7 +45,7 @@ const Step: React.FC<StepProps> = ({ step, setStep }) => {
   const [numberOfPeople, setNumberOfPeople] = useState<number>(1);
   const [selectedRestaurant, setSelectedRestaurant] = useState('');
   const [currentDish, setCurrentDish] = useState('');
-  const [currentDishCount, setCurrentDishCount] = useState(0);
+  const [currentDishCount, setCurrentDishCount] = useState(1);
   const [selectedDishes, setSelectedDishes] = useState<selectedDish[]>([]);
   const [availableRestaurants, setAvailableRestaurants] = useState<string[]>([]);
   const [availableDishes, setAvailableDishes] = useState<string[]>([]);
@@ -76,17 +76,11 @@ const Step: React.FC<StepProps> = ({ step, setStep }) => {
 
   useEffect(() => {
     generateAvailableRestaurant();
-    console.log('gggenn')
   }, [selectedMeal]);
 
   useEffect(() => {
-    console.log('avail', availableDishes);
     generateAvailableDishes();
   }, [selectedRestaurant]);
-
-  useEffect(() => {
-    console.log('avail', availableDishes);
-  }, [availableDishes])
 
   const generateAvailableRestaurant = () => {
     let availableList = [];
@@ -108,11 +102,6 @@ const Step: React.FC<StepProps> = ({ step, setStep }) => {
       ]);
     }
   };
-
-  const handlePeopleChange = (num: number) => {
-    setNumberOfPeople(num);
-    validation(step);
-  }
 
   const handleClick = () => {
     if (selectedDishes.filter((item)=>
@@ -137,50 +126,73 @@ const Step: React.FC<StepProps> = ({ step, setStep }) => {
       ...newSelectedDishes,
     ]);
   }
-  const validation = (step: number) => {
-    let flag = true;
-    switch (step) {
-      case steps.MEAL_AND_PEOPLE:
-        if (!selectedMeal) {
-          setErrorMeal(true);
-          flag = false;
-        }
-        if (numberOfPeople <= 0 || numberOfPeople > 10) {
-          setErrorPeople(true);
-          flag = false;
-        }
-        break;
-      case steps.RESTAURANT:
-        if (!selectedRestaurant) {
-          setErrorRestaurant(true);
-          flag = false;
-        }
-        break;
-      case steps.DISHES:
-        let total:number = selectedDishes.reduce((accumulator, currentValue) => accumulator + currentValue.count, 0)
-        console.log('total', total);
-        if (selectedDishes.length > 10 || total < numberOfPeople) {
-          setErrorDishes(true);
-          flag = false;
-        }
-        break;
-      default:
+
+  const validateMeal = () => {
+    if (!selectedMeal) {
+      setErrorMeal(true);
+      return false;
     }
-    return flag;
+    setErrorMeal(false);
+    return true;
+  }
+
+  const validatePeople = () => {
+    if (numberOfPeople <= 0 || numberOfPeople > 10) {
+      setErrorPeople(true);
+      return false;
+    }
+    setErrorPeople(false);
+    return true;
+  }
+
+  const validateRestaurant = () => {
+    if (!selectedRestaurant) {
+      setErrorRestaurant(true);
+      return false;
+    }
+    setErrorRestaurant(false);
+    return true;
+  }
+
+  const validateDishes = () => {
+    let total: number = selectedDishes.reduce((accumulator, currentValue) => accumulator + currentValue.count, 0);
+    if (selectedDishes.length > 10 || total < numberOfPeople) {
+      setErrorDishes(true);
+      return false;
+    }
+    setErrorDishes(false);
+    return true;
   }
 
   const handlePrevious = () => {
-    
     setStep(step - 1);
     return;
   }
 
   const handleNext = () => {
-    console.log(step);
-    console.log(numberOfPeople)
-    if (!validation(step)) {
+    let flag = true;
+    switch(step){
+      case steps.MEAL_AND_PEOPLE:
+        if (!validateMeal() || !validatePeople()) {
+           flag = false;
+        }
+        break;
+      case steps.RESTAURANT:
+        if (!validateRestaurant()){
+          flag = false;
+        }
+        break;
+      case steps.DISHES:
+        if (!validateDishes()) {
+          flag = false;
+        }
+        break;
+      default:
+        break;
+    }
+    if (!flag) {
       return;
-    };
+    }
     setStep(step + 1);
     return;
   }
@@ -196,8 +208,8 @@ const Step: React.FC<StepProps> = ({ step, setStep }) => {
     console.log(finalResult);
   }
 
-  return <div className="p-10 m-10">
-    <div className="max-h-80 h-80">
+  return <div className="flex flex-col p-10 m-10">
+    <div className="">
       {
         step === steps.MEAL_AND_PEOPLE && 
         <div>
@@ -279,7 +291,7 @@ const Step: React.FC<StepProps> = ({ step, setStep }) => {
               value={numberOfPeople}
               className="form-control pl-5 py-2 block w-full rounded-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               placeholder="0"
-              onChange={(e)=>handlePeopleChange(Number(e.target.value))}
+              onChange={(e)=>setNumberOfPeople(Number(e.target.value))}
             />
             <div className={classNames(errorPeople ? "visible": "invisible", "text-red-700 block text-sm font-medium")}>
               Number should be 1 to 10. 
@@ -440,23 +452,17 @@ const Step: React.FC<StepProps> = ({ step, setStep }) => {
             />
           </div>
         </div>
-        <div className="flex justify-between mt-40">
-          <button 
-          className="w-10 h-10 rounded-full bg-indigo-500 hover:bg-indigo-500 text-white"
-          onClick={handleClick}
-                      >
-            +
-          </button>
+        <div className="flex justify-between mt-10">
           <div>
           <ul role="list" className="divide-y divide-gray-200 rounded-md">
                   {selectedDishes.map((dish) => (
                     <li className="flex items-center justify-between py-3 pl-3 pr-4 text-sm" key={dish.name}>
-                      <div className="flex items-center">
+                      <div className="flex">
                         <div className="">{dish.name}</div>
-                        <div className="">{dish.count}</div>
                       </div>
-                      <div className="ml-4 flex-shrink-0">
-                        <div className="font-medium text-red-700 hover:text-red-500" onClick={() => handleDelete(dish.name)}>
+                      <div className="ml-4 flex flex-shrink-0">
+                        <div className="">{dish.count}</div>
+                        <div className="ml-4 font-medium text-red-700 hover:text-red-500" onClick={() => handleDelete(dish.name)}>
                           delete
                         </div>
                       </div>
@@ -465,6 +471,12 @@ const Step: React.FC<StepProps> = ({ step, setStep }) => {
                   )}
                 </ul>
           </div>
+          <button 
+          className="w-10 h-10 rounded-full bg-indigo-500 hover:bg-indigo-500 text-white"
+          onClick={handleClick}
+                      >
+            +
+          </button>
         </div>
         <div className={classNames(errorDishes ? "visible": "invisible", "text-red-700 mt-5 block text-sm font-medium")}>
               The dishes' number should be greater or equal to the number of people ({numberOfPeople}) and a maximum of 10 is allowed.
@@ -495,7 +507,7 @@ const Step: React.FC<StepProps> = ({ step, setStep }) => {
                   {selectedDishes.map((dish) => (
                     <li className="flex items-center justify-between py-3  text-sm">
                       <div className="pr-10 flex flex-1 justify-between items-center">
-                        <div className="">{dish.name}</div>
+                        <div className="mr-20">{dish.name}</div>
                         <div className="">{dish.count}</div>
                       </div>
                     </li>
@@ -512,7 +524,7 @@ const Step: React.FC<StepProps> = ({ step, setStep }) => {
     <div className="pt-10 flex justify-between">
       <button 
         className={classNames("relative inline-flex items-center border px-4 py-2 text-sm font-medium focus:z-20 bg-indigo-200 text-indigo-700 rounded hover:bg-indigo-300", step === steps.MEAL_AND_PEOPLE ? "invisible": "")}
-        onClick={()=>setStep(step - 1)}
+        onClick={handlePrevious}
       >
         Previous
       </button>
