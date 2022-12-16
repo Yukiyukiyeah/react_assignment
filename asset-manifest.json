@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/react-assignment/static/css/main.bed6fb80.css",
-    "main.js": "/react-assignment/static/js/main.dd7dd409.js",
-    "static/js/787.9da6907c.chunk.js": "/react-assignment/static/js/787.9da6907c.chunk.js",
-    "index.html": "/react-assignment/index.html",
-    "main.bed6fb80.css.map": "/react-assignment/static/css/main.bed6fb80.css.map",
-    "main.dd7dd409.js.map": "/react-assignment/static/js/main.dd7dd409.js.map",
-    "787.9da6907c.chunk.js.map": "/react-assignment/static/js/787.9da6907c.chunk.js.map"
+    "main.css": "/react_assignment/static/css/main.bed6fb80.css",
+    "main.js": "/react_assignment/static/js/main.3d610c09.js",
+    "static/js/787.9da6907c.chunk.js": "/react_assignment/static/js/787.9da6907c.chunk.js",
+    "index.html": "/react_assignment/index.html",
+    "main.bed6fb80.css.map": "/react_assignment/static/css/main.bed6fb80.css.map",
+    "main.3d610c09.js.map": "/react_assignment/static/js/main.3d610c09.js.map",
+    "787.9da6907c.chunk.js.map": "/react_assignment/static/js/787.9da6907c.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.bed6fb80.css",
-    "static/js/main.dd7dd409.js"
+    "static/js/main.3d610c09.js"
   ]
 }
