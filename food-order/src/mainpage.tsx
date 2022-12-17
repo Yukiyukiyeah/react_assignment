@@ -6,7 +6,7 @@ const MainPage = () =>{
   const [step, setStep] = useState(1)
   return (
     <div className="">
-      <Navigation step={step} setStep={setStep}/>
+      <Navigation step={step}/>
       <Steps step={step} setStep={setStep}/>
     </div>
   )
