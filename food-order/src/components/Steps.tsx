@@ -214,7 +214,7 @@ const Step: React.FC<StepProps> = ({ step, setStep }) => {
     <div className="">
       {
         step === steps.MEAL_AND_PEOPLE && 
-        <div>
+        <div className="className='mb-3 w-96">
           <div className="mb-20">
           <Listbox value={selectedMeal} onChange={setSelectedMeal}>
           {({ open }) => (
@@ -282,7 +282,7 @@ const Step: React.FC<StepProps> = ({ step, setStep }) => {
               Please select a meal.
           </div>
           </div>
-          <div className="mb-3 xl:w-96">
+          <div>
             <label htmlFor="price" className="block text-sm font-medium text-gray-700">
               Please Enter Number of People
             </label>
@@ -303,7 +303,7 @@ const Step: React.FC<StepProps> = ({ step, setStep }) => {
       }
       {
         step === steps.RESTAURANT && 
-        <div>
+        <div className='mb-3 w-96'>
           <Listbox value={selectedRestaurant} onChange={setSelectedRestaurant}>
           {({ open }) => (
             <>
@@ -373,13 +373,15 @@ const Step: React.FC<StepProps> = ({ step, setStep }) => {
       }
       {
         step === steps.DISHES && 
-        <div>
+        <div className='mb-3 w-96'>
         <div className="flex justify-between">
-          <div className="w-60 mr-10">
+          <div className="w-60 mr-10 relative top-4">
           <Listbox value={currentDish} onChange={setCurrentDish}>
           {({ open }) => (
             <>
-              <Listbox.Label className="block text-sm font-medium text-gray-700">Please Select a Dish</Listbox.Label>
+              <Listbox.Label className="block text-sm font-medium text-gray-700">
+                Please Select a Dish
+              </Listbox.Label>
               <div className="relative mt-1">
                 <Listbox.Button className="h-10 relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm">
                   <span className="flex items-center">
@@ -439,7 +441,7 @@ const Step: React.FC<StepProps> = ({ step, setStep }) => {
             )}
           </Listbox>
           </div>
-          <div className="w-80">
+          <div className="w-30">
             <label htmlFor="price" className="block text-sm font-medium text-gray-700">
               Please Enter No. of Serving
             </label>

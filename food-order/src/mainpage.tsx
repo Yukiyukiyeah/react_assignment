@@ -5,7 +5,7 @@ import Steps from './components/Steps';
 const MainPage = () =>{
   const [step, setStep] = useState(1)
   return (
-    <div className="">
+    <div className="flex flex-col items-center h-screen">
       <Navigation step={step}/>
       <Steps step={step} setStep={setStep}/>
     </div>

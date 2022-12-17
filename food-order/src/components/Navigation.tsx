@@ -11,24 +11,22 @@ const Navigation: React.FC<NavigationProps> = ({ step }) => {
         <div>
           <nav className="isolate inline-flex item-center -space-x-px rounded-md shadow-sm">
             <div
-              aria-current="step"
-              className={"relative inline-flex items-center border  px-4 py-2 text-sm font-medium focus:z-20 " + (step === steps.MEAL_AND_PEOPLE? 'border-indigo-500 text-indigo-600 bg-indigo-50 z-10': 'border-gray-300 bg-white text-gray-500')}
+              className={"cursor-default relative inline-flex items-center border  px-4 py-2 text-sm font-medium focus:z-20 " + (step === steps.MEAL_AND_PEOPLE? 'border-indigo-500 text-indigo-600 bg-indigo-50 z-10': 'border-gray-300 bg-white text-gray-500')}
             >
               Step {steps.MEAL_AND_PEOPLE}
             </div>
             <div
-              className={"relative inline-flex items-center border px-4 py-2 text-sm font-medium focus:z-20 " + (step === steps.RESTAURANT? 'border-indigo-500 text-indigo-600 bg-indigo-50 z-10': 'border-gray-300 bg-white text-gray-500')}
+              className={"cursor-default relative inline-flex items-center border px-4 py-2 text-sm font-medium focus:z-20 " + (step === steps.RESTAURANT? 'border-indigo-500 text-indigo-600 bg-indigo-50 z-10': 'border-gray-300 bg-white text-gray-500')}
             >
               Step {steps.RESTAURANT}
             </div>
             <div
-              aria-current="page"
-              className={"relative inline-flex items-center border px-4 py-2 text-sm font-medium focus:z-20 " + (step === steps.DISHES? 'border-indigo-500 text-indigo-600 bg-indigo-50 z-10': 'border-gray-300 bg-white text-gray-500')}
+              className={"cursor-default relative inline-flex items-center border px-4 py-2 text-sm font-medium focus:z-20 " + (step === steps.DISHES? 'border-indigo-500 text-indigo-600 bg-indigo-50 z-10': 'border-gray-300 bg-white text-gray-500')}
             >
               Step {steps.DISHES}
             </div>
             <div
-              className={"relative inline-flex items-center border px-4 py-2 text-sm font-medium focus:z-20 " + (step === steps.REVIEW? 'border-indigo-500 text-indigo-600 bg-indigo-50 z-10': 'border-gray-300 bg-white text-gray-500')}
+              className={"cursor-default relative inline-flex items-center border px-4 py-2 text-sm font-medium focus:z-20 " + (step === steps.REVIEW? 'border-indigo-500 text-indigo-600 bg-indigo-50 z-10': 'border-gray-300 bg-white text-gray-500')}
             >
               Review
             </div>
