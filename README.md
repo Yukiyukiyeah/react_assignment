@@ -1,19 +1,22 @@
+# See a demo [here](https://yukiyukiyeah.github.io/react_assignment/#/)
 # G123 React Assignment
 
 | This assignment is aimed to help us know more about your `React` skills.
 
 <!-- toc -->
 
-* [Requirements](#requirements)
-  * [Must](#must)
-  * [Optional](#optional)
-* [Setup](#setup)
-* [Description](#description)
-  * [Step 1](#step-1)
-  * [Step 2](#step-2)
-  * [Step 3](#step-3)
-  * [Step 4](#step-4)
-  * [Notes](#notes)
+- [See a demo here](#see-a-demo-here)
+- [G123 React Assignment](#g123-react-assignment)
+  - [Requirements](#requirements)
+    - [Must](#must)
+    - [Optional](#optional)
+  - [Setup](#setup)
+  - [Description](#description)
+    - [Step 1](#step-1)
+    - [Step 2](#step-2)
+    - [Step 3](#step-3)
+    - [Step 4](#step-4)
+    - [Notes](#notes)
 
 <!-- tocstop -->
 
